@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Application xmlns:fx="http://ns.adobe.com/mxml/2009"
+			   xmlns:s="library://ns.adobe.com/flex/spark"
+			   xmlns:mx="library://ns.adobe.com/flex/mx"
+			   xmlns:controls="controls.*"
+			   width="320" height="320" backgroundColor="#000000"
+			   creationComplete="initApplication()">
+	<fx:Declarations>
+	</fx:Declarations>
+	<fx:Script>
+		<![CDATA[
+			
+			//---------------------------------------------------------------------------------------------
+			//---------------------------------------------------------------------------------------------
+			// Imports
+			//---------------------------------------------------------------------------------------------
+			import flash.external.ExternalInterface;
+			
+			import mx.controls.Alert;
+			import mx.events.StateChangeEvent;
+			
+			import org.osmf.events.MediaPlayerStateChangeEvent;
+			import org.osmf.events.TimeEvent;
+			
+
+			
+			//---------------------------------------------------------------------------------------------
+			//---------------------------------------------------------------------------------------------
+			// Constants
+			//---------------------------------------------------------------------------------------------
+			private const kEiFuncVideoDonePrefix:String	= "video_done_";
+			
+			
+			//---------------------------------------------------------------------------------------------
+			//---------------------------------------------------------------------------------------------
+			// Variables
+			//---------------------------------------------------------------------------------------------
+			private var _resourceID:String 				=  "";
+
+			
+			//---------------------------------------------------------------------------------------------
+			//---------------------------------------------------------------------------------------------
+			// Methods
+			//---------------------------------------------------------------------------------------------
+			
+			//---------------------------------------------------------------------------------------------
+			public function initApplication():void {
+				
+				_resourceID 			= this.parameters.resourceID;
+				this.video.source 		= this.parameters.source;
+				var rotation:int 		= this.parameters.rotation;
+				
+				this.video.rotation 	= rotation;
+				
+				if(rotation == 90) {
+					this.video.x = this.video.width;
+				}
+				else if(rotation == 180) {
+					this.video.x = this.video.width;
+					this.video.y = this.video.height;
+				}
+				else if(rotation == 270) {
+					this.video.y = this.video.height;
+				}
+			}
+			
+			
+			//---------------------------------------------------------------------------------------------
+			//---------------------------------------------------------------------------------------------
+			// Video event handlers
+			//---------------------------------------------------------------------------------------------
+			
+			//---------------------------------------------------------------------------------------------
+			protected function onVideoFinished(event:TimeEvent):void {
+				ExternalInterface.call(kEiFuncVideoDonePrefix + _resourceID);
+			}
+			
+			//---------------------------------------------------------------------------------------------
+			protected function onVideoClicked(event:MouseEvent):void {
+				this.video.stop();
+				ExternalInterface.call(kEiFuncVideoDonePrefix + _resourceID);
+			}
+			
+			//---------------------------------------------------------------------------------------------
+			protected function onVideoStateChange(event:MediaPlayerStateChangeEvent):void {
+				//if(this.video.mediaPlayerState == "playing") 				
+				//hide spinner
+			}
+			
+		]]>
+	</fx:Script>
+	
+	<s:VideoDisplay id="video" x="0" y="0" width="320" height="320" autoPlay="true"
+					click="onVideoClicked(event)" complete="onVideoFinished(event)"
+					mediaPlayerStateChange="onVideoStateChange(event)" scaleMode="zoom"/>
+	
+	
+</s:Application>
