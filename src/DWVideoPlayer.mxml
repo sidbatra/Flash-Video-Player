@@ -3,8 +3,7 @@
 			   xmlns:s="library://ns.adobe.com/flex/spark"
 			   xmlns:mx="library://ns.adobe.com/flex/mx"
 			   xmlns:controls="controls.*"
-			   width="320" height="320" backgroundColor="#000000"
-			   creationComplete="initApplication()">
+			   backgroundColor="#000000" creationComplete="initApplication()">
 	<fx:Declarations>
 	</fx:Declarations>
 	<fx:Script>
@@ -90,7 +89,7 @@
 		]]>
 	</fx:Script>
 	
-	<s:VideoDisplay id="video" x="0" y="0" width="320" height="320" autoPlay="true"
+	<s:VideoDisplay id="video" x="0" y="0" width="100%" height="100%" autoPlay="true"
 					click="onVideoClicked(event)" complete="onVideoFinished(event)"
 					mediaPlayerStateChange="onVideoStateChange(event)" scaleMode="zoom"/>
 	
